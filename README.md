@@ -1,115 +1,108 @@
-# OpenBB LLM Agents
-Work-in-progress.
+# OpenBB LLM 智能体代理
+正在进行中。
 
-This is a project that leverages LLMs and [OpenBB Platform](https://github.com/OpenBB-finance/OpenBBTerminal/tree/develop/openbb_platform) to create financial
-analyst agents that can autonomously perform financial research, and answer
-questions using up-to-date data. This is possible as a result of agents
-utilizing function calling to interact with the OpenBB Platform.
+这是一个利用LLM（大型语言模型）和[OpenBB平台](https://github.com/OpenBB-finance/OpenBBTerminal/tree/develop/openbb_platform) 来创建金融分析师智能体代理的项目，这些智能体代理能够自主执行金融研究，并使用最新数据回答问题。这是可能的，因为智能体代理使用函数调用与OpenBB平台进行交互。
 
+## 安装
+目前，我们支持Python 3.10+。我们将在相对不久的将来增加对更多Python版本的支持。
 
-## Installation
-Currently, we support Python 3.10+. We will be adding support for more version of Python relatively soon.
-
-`openbb-agents` is available as a PyPI package:
+`openbb-agents`可作为PyPI包获取：
 
 ``` sh
 pip install openbb-agents --upgrade
 ```
 
-## Setup
-### OpenAI API keys
+## 设置
+### OpenAI API密钥
 
-To use OpenBB LLM Agents, you need an OpenAI API key. Follow these steps:
+要使用OpenBB LLM 智能体代理，您需要一个OpenAI API密钥。请按照以下步骤操作：
 
-1. **Get API Key**: Sign up on [OpenAI](https://www.openai.com/) and get your API key.
-2. **Set Environment Variable**: Add this to your shell profile (`.bashrc`, `.zshrc`, etc.):
+1. **获取API密钥**：在[OpenAI](https://www.openai.com/) 注册并获取您的API密钥。
+2. **设置环境变量**：将其添加到您的shell配置文件中（`.bashrc`，`.zshrc`等）：
     ```sh
     export OPENAI_API_KEY="your_openai_api_key"
     ```
 
-### OpenBB Platform data provider credentials
-To use the OpenBB Platform functions, you need to configure the necessary [data provider API credentials](https://docs.openbb.co/platform/usage/api_keys). This can be done in one of two ways:
+### OpenBB平台数据提供商凭证
+要使用OpenBB平台功能，您需要配置必要的[data provider API凭证](https://docs.openbb.co/platform/usage/api_keys)。 这可以通过以下两种方式之一完成：
 
-1. **Local Configuration**: Specify your credentials in a `~/.openbb_platform/user_settings.json` file. Follow the [local environment setup guide](https://docs.openbb.co/platform/getting_started/api_keys#local-environment) for detailed instructions.
-2. **OpenBB Hub**: Create a personal access token (PAT) via your [OpenBB Hub](https://my.openbb.co/) account. This PAT can then be passed to the agent as an argument.
+1. **本地配置**：在`~/.openbb_platform/user_settings.json`文件中指定您的凭证。按照[本地环境设置指南](https://docs.openbb.co/platform/getting_started/api_keys#local-environment) 了解详细说明。
+2. **OpenBB Hub**：通过您的[OpenBB Hub](https://my.openbb.co/)账户创建个人访问令牌（PAT）。然后可以将此PAT作为参数传递给智能体代理。
 
-## Getting started
-It is highly recommended to take a look at the [Getting Started Notebook](https://github.com/OpenBB-finance/openbb-agents/blob/main/getting_started.ipynb), which runs you through the features of `openbb-agents` at a high level.
+## 开始使用
+强烈建议查看[入门笔记本](https://github.com/awesome-generative-ai/openbb-agents/blob/main/getting_started.ipynb)，它将带您从高层次了解`openbb-agents`的功能。
 
-## Usage
+## 使用方法
 
 ``` python
 >>> from openbb_agents.agent import openbb_agent
->>> result = openbb_agent("What is the current market cap of TSLA?")  # Will print some logs to show you progress
+>>> result = openbb_agent("TSLA当前的市值是多少？")  # 将打印一些日志以显示您的进度
 >>> print(result)
-- The current market cap of TSLA (Tesla, Inc.) is approximately $695,833,798,800.00.
-- This figure is based on the most recent data available, which is from January 15, 2024.
-- The market cap is calculated by multiplying the current stock price ($218.89) by the number of outstanding shares (3,178,920,000).
+- TSLA（特斯拉公司）当前的市值大约为695,833,798,800.00美元。
+- 这个数字基于2024年1月15日最近可用的数据。
+- 市值是通过将当前股价（218.89美元）乘以流通股数量（3,178,920,000股）来计算的。
 ```
 
-To use your data provider credentials stored in OpenBB Hub, you can pass in your OpenBB Hub PAT directly to the agent:
+要使用存储在OpenBB Hub中的您的数据提供商凭证，您可以直接将OpenBB Hub PAT传递给智能体代理：
 
 ``` python
->>> openbb_agent("What is the stock price of AAPL?", openbb_pat="<openbb-hub-pat>")
+>>> openbb_agent("AAPL的股价是多少？", openbb_pat="<openbb-hub-pat>")
 ```
 
-**Note:** The agent dynamically configures itself based on the available data provider credentials. Consequently, certain data sources and functions may be inaccessible without the appropriate API key. By default, `yfinance` is included as a data provider and does not require an API key. For a comprehensive list of functions and their supported data providers, refer to the [OpenBB Platform documentation](https://docs.openbb.co/platform/reference).
+**注意：**智能体代理根据可用的数据提供商凭证动态配置自己。因此，没有适当的API密钥，某些数据源和功能可能无法访问。默认情况下，`yfinance`作为数据提供商被包含在内，不需要API密钥。有关支持的数据提供商的函数的全面列表，请参阅[OpenBB平台文档](https://docs.openbb.co/platform/reference)。
 
-Queries can be relatively complex:
+查询可以相对复杂：
 
 ```python
->>> openbb_agent("Perform a fundamentals financial analysis of AMZN using the most recently available data. What do you find that's interesting?")
+>>> openbb_agent("使用最近可用的数据对AMZN进行基本面财务分析。您发现了什么有趣的内容？")
 ```
 
-Queries can also have temporal dependencies (i.e the answers of previous subquestions are required to answer a later subquestion):
+查询也可以具有时间依赖性（即，需要之前子问题的答案来回答后面的子问题）：
 
 ``` python
->>> openbb_agent("Who are TSLA's peers? What is their respective market cap? Return the results in _descending_ order of market cap.")
+>>> openbb_agent("TSLA的同行是谁？它们各自的市值是多少？以市值_降序_返回结果。")
 ```
 
-An `async` variant of the agent is also available:
+智能体代理也提供了`async`版本：
 
 ``` python
 >>> from openbb_agents.agent import aopenbb_agent
->>> await aopenbb_agent("What is the current market cap of TSLA?")
+>>> await aopenbb_agent("TSLA当前的市值是多少？")
 ```
 
-
-## Development
-- Create a new virtual environment, with `poetry `
+## 开发
+- 使用`poetry`创建一个新的虚拟环境
 - `poetry install`
 
-### Linting and Formatting
-We're currently experimenting with `ruff` as a drop-in replacement for `black`, `isort` and `pylint`.
+### 代码检查和格式化
+我们目前正在尝试使用`ruff`作为`black`、`isort`和`pylint`的替代品。
 
-You can run linting checks as follows:
+您可以按以下方式运行代码检查：
 
 ``` sh
 ruff check
 ```
 
-Or fix linting errors:
+或修复代码检查错误：
 
 ``` sh
 ruff check --fix
 ```
 
-Or format the code:
+或格式化代码：
 
 ``` sh
 ruff format
 ```
 
-We've also included these in the `pre-commit`, if you'd prefer to have these checks run automatically before commiting code. 
-You can install the `pre-commit` hooks as follows:
+我们还在`pre-commit`中包含了这些，如果您希望在提交代码之前自动运行这些检查。您可以按以下方式安装`pre-commit`钩子：
 
 ``` sh
 pre-commit install
 ```
 
-### Testing
-We use `pytest` as our test runner:
+### 测试
+我们使用`pytest`作为我们的测试运行器：
 ``` sh
 pytest -n 8 tests/
 ```
-
