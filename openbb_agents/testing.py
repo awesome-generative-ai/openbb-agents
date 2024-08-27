@@ -1,4 +1,4 @@
-from magentic import OpenaiChatModel, prompt
+from magentic import LitellmChatModel, prompt
 from pydantic import BaseModel, Field
 
 
@@ -28,7 +28,7 @@ def with_llm(model_output, assertion) -> bool:
 
     @prompt(
         "Given the following model output: {model_output}, determine if the following assertion is true: {assertion}",  # noqa: E501
-        model=OpenaiChatModel(
+        model=LitellmChatModel(
             model="gpt-3.5-turbo",
             temperature=0.0,
         ),

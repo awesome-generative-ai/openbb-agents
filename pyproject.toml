@@ -14,10 +14,12 @@ faiss-cpu = "^1.7.4"
 magentic = {extras = ["anthropic", "litellm"], version = "^0.24.0"}
 pydantic = "2.7.1"
 openbb = "4.1.7"
-langchain = "^0.1.17"
-langchain-community = "^0.0.37"
-langchain-openai = "^0.1.6"
 openbb-yfinance = "^1.1.5"
+langchain = "^0.2.14"
+langchain-community = "^0.2.12"
+langchain-groq = "^0.1.9"
+langchain-ollama = "^0.1.1"
+langchain-ai21 = "^0.1.7"
 
 [tool.poetry.group.dev.dependencies]
 pre-commit = "^3.5.0"

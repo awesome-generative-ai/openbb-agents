@@ -6,7 +6,7 @@ from typing import Any, Callable
 from langchain.schema import Document
 from langchain_community.vectorstores.faiss import FAISS
 from langchain_core.vectorstores import VectorStore
-from langchain_openai import OpenAIEmbeddings
+from langchain_ollama import OllamaEmbeddings
 from openbb import obb
 from pydantic import BaseModel
 
@@ -122,7 +122,7 @@ def build_vector_index_from_openbb_function_descriptions(
                 },
             )
         )
-    vector_store = FAISS.from_documents(documents, embedding=OpenAIEmbeddings())
+    vector_store = FAISS.from_documents(documents, embedding=OllamaEmbeddings(model="llama3.1"))
     return vector_store
 
 
